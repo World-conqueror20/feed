@@ -85,9 +85,9 @@ class TvDatafeed:
         return token
         
     def __load_user_agents(self):
-    with open("user-agents.txt", "r") as f:
-        user_agents = [line.strip() for line in f.readlines() if line.strip()]
-    return user_agents
+        with open("user-agents.txt", "r") as f:
+            user_agents = [line.strip() for line in f.readlines() if line.strip()]
+        return user_agents
 
     def __generate_user_agent(self):
         user_agents = self.__load_user_agents()
