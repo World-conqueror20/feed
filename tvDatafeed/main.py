@@ -83,12 +83,31 @@ class TvDatafeed:
                 token = None
 
         return token
+        
+    def __load_user_agents(self):
+    with open("user-agents.txt", "r") as f:
+        user_agents = [line.strip() for line in f.readlines() if line.strip()]
+    return user_agents
 
+    def __generate_user_agent(self):
+        user_agents = self.__load_user_agents()
+        return random.choice(user_agents)
+        
     def __create_connection(self):
-        logging.debug("creating websocket connection")
+        # logging.debug("creating websocket connection")
+        # self.ws = create_connection(
+        #     "wss://data.tradingview.com/socket.io/websocket", headers=self.ws_headers, timeout=self.ws_timeout
+        # )
+
+        custom_headers = json.dumps({
+            "Origin": "https://data.tradingview.com",
+            "User-Agent": self.__generate_user_agent()
+        })
+        
         self.ws = create_connection(
-            "wss://data.tradingview.com/socket.io/websocket", headers=self.ws_headers, timeout=self.ws_timeout
+            "wss://data.tradingview.com/socket.io/websocket", headers=custom_headers, timeout=self.ws_timeout
         )
+
 
     @staticmethod
     def __filter_raw_message(text):
